@@ -1,16 +1,151 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Météorite - Application météo moderne</title>
-    <meta http-equiv="refresh" content="0;url=/login-page.html">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="Logo_meteorite.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="background.css">
+    <title>Site Météorite</title>
 </head>
 
 <body>
-    <p>Redirection vers la page de connexion...</p>
+        <!-- Global loader -->
+        <div id="site-loader" class="site-loader">
+            <div class="loader-inner">
+                <!-- From Uiverse.io by JkHuger -->
+                <div class="box-of-star1">
+                        <div class="star star-position1"></div>
+                        <div class="star star-position2"></div>
+                        <div class="star star-position3"></div>
+                        <div class="star star-position4"></div>
+                        <div class="star star-position5"></div>
+                        <div class="star star-position6"></div>
+                        <div class="star star-position7"></div>
+                </div>
+                <div class="box-of-star2">
+                        <div class="star star-position1"></div>
+                        <div class="star star-position2"></div>
+                        <div class="star star-position3"></div>
+                        <div class="star star-position4"></div>
+                        <div class="star star-position5"></div>
+                        <div class="star star-position6"></div>
+                        <div class="star star-position7"></div>
+                </div>
+                <div class="box-of-star3">
+                        <div class="star star-position1"></div>
+                        <div class="star star-position2"></div>
+                        <div class="star star-position3"></div>
+                        <div class="star star-position4"></div>
+                        <div class="star star-position5"></div>
+                        <div class="star star-position6"></div>
+                        <div class="star star-position7"></div>
+                </div>
+                <div class="box-of-star4">
+                        <div class="star star-position1"></div>
+                        <div class="star star-position2"></div>
+                        <div class="star star-position3"></div>
+                        <div class="star star-position4"></div>
+                        <div class="star star-position5"></div>
+                        <div class="star star-position6"></div>
+                        <div class="star star-position7"></div>
+                </div>
+                <div data-js="astro" class="astronaut">
+                        <div class="head"></div>
+                        <div class="arm arm-left"></div>
+                        <div class="arm arm-right"></div>
+                        <div class="body">
+                            <div class="panel"></div>
+                        </div>
+                        <div class="leg leg-left"></div>
+                        <div class="leg leg-right"></div>
+                        <div class="schoolbag"></div>
+                </div>
+            </div>
+        </div>
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>
+        <!-- Astronaut in background, animated like stars -->
+        <div class="astronaut bg-astronaut" aria-hidden="true">
+                <div class="head"></div>
+                <div class="arm arm-left"></div>
+                <div class="arm arm-right"></div>
+                <div class="body">
+                    <div class="panel"></div>
+                </div>
+                <div class="leg leg-left"></div>
+                <div class="leg leg-right"></div>
+                <div class="schoolbag"></div>
+                <div class="strap-left"></div>
+                <div class="strap-right"></div>
+        </div>
+
+    <nav class="navbar">
+        <ul>
+            <li><a href="mapfrance.html" ><img src="drapeaufrance.png" alt="Map de France" class="icon-navbar"
+                        style="vertical-align:middle; height:1.2em; margin-right:0.3em;">Map météo France</a></li>
+            <li><a href="meteofrance.html" ><img src="meteofrance.png" alt="Météo de France" class="icon-navbar"
+                        style="vertical-align:middle; height:1.2em; margin-right:0.3em;">Recherche météo ville</a></li>
+            <li><a href="apropos.html" >À propos de nous</a></li>
+            
+        </ul>
+    </nav>
+
+    <header>
+        <div class="header-inner">
+            <img src="Logo_meteorite2.png" alt="Logo météorite" class="logo-animated">
+            <div>
+                <h1 class="titre">Météorite</h1>
+                <h3 class="subtitle">Site météorologique</h3>
+            </div>
+        </div>
+
+    </header>
+
+    <main>
+        <section id="about" class="center-content">
+            <h2>À propos du site</h2>
+            <p>Nous vous donnons votre météo locale à tout instant.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Site Météorite</p>
+    </footer>
+
     <script>
-        window.location.href = '/login-page.html';
+      function createStars(id, count, size) {
+        const stars = [];
+        for (let i = 0; i < count; i++) {
+          const x = Math.floor(Math.random() * 2000);
+          const y = Math.floor(Math.random() * 2000);
+          stars.push(`${x}px ${y}px #FFF`);
+        }
+        const el = document.getElementById(id);
+        el.style.width = size + 'px';
+        el.style.height = size + 'px';
+        el.style.boxShadow = stars.join(', ');
+      }
+
+      createStars('stars', 200, 1);   // Petites étoiles (200)
+      createStars('stars2', 100, 2);  // Moyennes (100)
+      createStars('stars3', 50, 3);   // Grosses (50)
     </script>
+        <script>
+            // Hide loader on full load
+            function hideSiteLoader(){
+                const loader = document.getElementById('site-loader');
+                if(!loader) return;
+                loader.classList.add('hidden');
+                setTimeout(()=> loader.remove(), 600);
+            }
+            if(document.readyState === 'complete') hideSiteLoader();
+            window.addEventListener('load', hideSiteLoader);
+            // Fallback: hide after 6s in case of slow load
+            setTimeout(hideSiteLoader, 6000);
+        </script>
 </body>
+
 </html>
