@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription - Météorite</title>
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/components.css">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-logo">
+                <div class="auth-logo-text">☄️ Météorite</div>
+            </div>
+
+            <h1 class="auth-title">Créer un compte</h1>
+
+            <div id="errorMessage" style="display: none;"></div>
+
+            <form class="auth-form" id="registerForm">
+                <div class="form-group">
+                    <label class="form-label" for="firstName">Prénom</label>
+                    <input type="text" class="form-input" id="firstName" required placeholder="Votre prénom">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="email">Email</label>
+                    <input type="email" class="form-input" id="email" required placeholder="votre@email.com">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">Mot de passe</label>
+                    <input type="password" class="form-input" id="password" required placeholder="••••••••" minlength="6">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="confirmPassword">Confirmer le mot de passe</label>
+                    <input type="password" class="form-input" id="confirmPassword" required placeholder="••••••••" minlength="6">
+                </div>
+
+                <button type="submit" class="btn-primary" style="width: 100%;">S'inscrire</button>
+            </form>
+
+            <div class="auth-link">
+                Déjà un compte ? <a href="/login-page.html">Se connecter</a>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="/assets/js/register.js"></script>
+</body>
+</html>

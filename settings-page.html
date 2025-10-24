@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paramètres - Météorite</title>
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/components.css">
+</head>
+<body>
+    <div class="loader-wrapper" id="loader">
+        <div class="loader"></div>
+    </div>
+
+    <header>
+        <div class="header-content">
+            <a href="/main.html" class="logo">
+                <span>☄️</span>
+                <span>Météorite</span>
+            </a>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">☰</button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="/main.html" class="nav-link">Météo</a></li>
+                <li><a href="/favorites-page.html" class="nav-link">Favoris</a></li>
+                <li><a href="/alerts-page.html" class="nav-link">Alertes</a></li>
+                <li><a href="/settings-page.html" class="nav-link active">Paramètres</a></li>
+            </ul>
+            <div class="user-info" id="userInfo">
+                <button class="theme-toggle" id="themeToggle">🌙</button>
+                <span class="user-name" id="userName"></span>
+                <button class="btn-logout" id="logoutBtn">Déconnexion</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <h1 class="page-title">Paramètres du compte</h1>
+
+            <div style="max-width: 600px; margin: 0 auto;">
+                <div id="errorMessage" style="display: none;"></div>
+                <div id="successMessage" style="display: none;"></div>
+
+                <div style="background: var(--white); border-radius: 16px; padding: 30px; margin-bottom: 20px; box-shadow: var(--shadow-md);">
+                    <h2 style="color: var(--dark-blue); margin-bottom: 20px;">Informations du compte</h2>
+
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-input" id="userEmail" disabled>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="firstName">Prénom</label>
+                        <input type="text" class="form-input" id="firstName" placeholder="Votre prénom">
+                    </div>
+
+                    <button class="btn-primary" id="updateProfileBtn">Mettre à jour le profil</button>
+                </div>
+
+                <div style="background: var(--white); border-radius: 16px; padding: 30px; margin-bottom: 20px; box-shadow: var(--shadow-md);">
+                    <h2 style="color: var(--dark-blue); margin-bottom: 20px;">Apparence</h2>
+
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <div style="font-weight: 600; color: var(--text-dark); margin-bottom: 5px;">Thème sombre</div>
+                            <div style="font-size: 14px; color: var(--text-light);">Activer le mode sombre de l'interface</div>
+                        </div>
+                        <label style="position: relative; display: inline-block; width: 60px; height: 30px;">
+                            <input type="checkbox" id="darkModeToggle" style="opacity: 0; width: 0; height: 0;">
+                            <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 30px;"></span>
+                            <span style="position: absolute; content: ''; height: 22px; width: 22px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%;"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div style="background: var(--white); border-radius: 16px; padding: 30px; margin-bottom: 20px; box-shadow: var(--shadow-md);">
+                    <h2 style="color: var(--dark-blue); margin-bottom: 20px;">Modifier le mot de passe</h2>
+
+                    <form id="passwordForm">
+                        <div class="form-group">
+                            <label class="form-label" for="newPassword">Nouveau mot de passe</label>
+                            <input type="password" class="form-input" id="newPassword" placeholder="••••••••" minlength="6">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="confirmNewPassword">Confirmer le mot de passe</label>
+                            <input type="password" class="form-input" id="confirmNewPassword" placeholder="••••••••" minlength="6">
+                        </div>
+
+                        <button type="submit" class="btn-primary">Changer le mot de passe</button>
+                    </form>
+                </div>
+
+                <div style="background: #fff5f5; border-radius: 16px; padding: 30px; border: 2px solid #ff6b6b; box-shadow: var(--shadow-md);">
+                    <h2 style="color: #d63031; margin-bottom: 20px;">Zone dangereuse</h2>
+
+                    <div style="margin-bottom: 15px;">
+                        <p style="color: #666; font-size: 14px; margin-bottom: 15px;">
+                            La suppression de votre compte est définitive et supprimera toutes vos données, favoris et alertes.
+                        </p>
+                        <button class="btn-danger" id="deleteAccountBtn">Supprimer mon compte</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p class="footer-text">© 2025 Météorite - Application météo moderne</p>
+            <p class="footer-text">Développé par Nathan, Mathéo, Julien et Rayen</p>
+        </div>
+    </footer>
+
+    <script type="module" src="/assets/js/settings-page.js"></script>
+</body>
+</html>
