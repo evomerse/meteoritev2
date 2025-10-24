@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paramètres - Météorite</title>
+    <link rel="icon" type="image/x-icon" href="Logo_meteorite.png">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/components.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <img src="Logo_meteorite2.png" alt="Logo" class="logo-img">
+                <span class="logo-text">Météorite</span>
+            </div>
+            <nav class="nav-menu" id="navMenu">
+                <a href="/index.html" class="nav-link">Météo</a>
+                <a href="/favorites.html" class="nav-link">Favoris</a>
+                <a href="/alerts.html" class="nav-link">Alertes</a>
+                <a href="/settings.html" class="nav-link active">Paramètres</a>
+            </nav>
+            <div class="user-actions">
+                <button class="theme-toggle" id="themeToggle">🌙</button>
+                <div class="user-info" id="userInfo" style="display: none;">
+                    <span class="user-name" id="userName"></span>
+                    <button class="btn-logout" id="logoutBtn">Déconnexion</button>
+                </div>
+                <a href="/login.html" class="btn-login" id="loginBtn">Connexion</a>
+            </div>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">☰</button>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <h1 class="section-title">Paramètres</h1>
+
+            <div id="authRequired" style="display: none; text-align: center; padding: 60px 20px;">
+                <p style="font-size: 18px; color: var(--text-light); margin-bottom: 30px;">
+                    Vous devez être connecté pour accéder aux paramètres
+                </p>
+                <a href="/login.html" class="btn-search">Se connecter</a>
+            </div>
+
+            <div id="settingsContent" style="display: none; max-width: 600px; margin: 0 auto;">
+                <div style="background: var(--white); border-radius: 20px; padding: 30px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); margin-bottom: 20px;">
+                    <h2 style="color: var(--dark-blue); margin-bottom: 20px;">Profil</h2>
+
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 8px; color: var(--dark-blue);">Email</label>
+                        <input type="text" id="userEmail" readonly style="width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border-color); background: var(--light-gray);">
+                    </div>
+
+                    <div class="form-group">
+                        <label style="display: block; font-weight: 600; margin-bottom: 8px; color: var(--dark-blue);">Prénom</label>
+                        <input type="text" id="userFirstName" style="width: 100%; padding: 12px; border-radius: 10px; border: 2px solid var(--border-color);">
+                    </div>
+
+                    <button id="saveProfileBtn" class="btn-search" style="margin-top: 20px; width: 100%;">
+                        Enregistrer
+                    </button>
+                </div>
+
+                <div style="background: var(--white); border-radius: 20px; padding: 30px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                    <h2 style="color: var(--dark-blue); margin-bottom: 20px;">Apparence</h2>
+
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <p style="font-weight: 600; color: var(--dark-blue);">Thème</p>
+                            <p style="font-size: 14px; color: var(--text-light);">Changer entre clair et sombre</p>
+                        </div>
+                        <button id="toggleThemeBtn" class="btn-geoloc">
+                            Basculer
+                        </button>
+                    </div>
+                </div>
+
+                <div id="successMessage" class="success-message" style="margin-top: 20px;"></div>
+                <div id="errorMessage" class="error-message" style="margin-top: 20px;"></div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2025 Météorite - Application météo moderne</p>
+        </div>
+    </footer>
+
+    <script type="module">
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+        const supabaseUrl = 'https://djpigduzgtzlktpyhhgf.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRqcGlnZHV6Z3R6bGt0cHloaGdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjExNTMwMzQsImV4cCI6MjA3NjcyOTAzNH0.xqxv2LGs-dXSXDg_ccXzhAY02lP8KxOZ_TpXXZlmAUQ';
+        const supabase = createClient(supabaseUrl, supabaseKey);
+
+        let currentUser = null;
+
+        async function init() {
+            currentUser = await getCurrentUser();
+
+            if (!currentUser) {
+                document.getElementById('authRequired').style.display = 'block';
+                document.getElementById('loginBtn').style.display = 'inline-block';
+                return;
+            }
+
+            const profile = await getUserProfile(currentUser.id);
+            if (profile) {
+                document.getElementById('userName').textContent = profile.first_name || profile.email;
+                document.getElementById('userInfo').style.display = 'flex';
+                document.getElementById('loginBtn').style.display = 'none';
+                document.getElementById('userEmail').value = profile.email;
+                document.getElementById('userFirstName').value = profile.first_name || '';
+            }
+
+            document.getElementById('settingsContent').style.display = 'block';
+        }
+
+        async function getCurrentUser() {
+            const { data: { user } } = await supabase.auth.getUser();
+            return user;
+        }
+
+        async function getUserProfile(userId) {
+            const { data } = await supabase.from('profiles').select('*').eq('id', userId).maybeSingle();
+            return data;
+        }
+
+        function showSuccess(message) {
+            const el = document.getElementById('successMessage');
+            el.textContent = message;
+            el.style.display = 'block';
+            setTimeout(() => el.style.display = 'none', 3000);
+        }
+
+        function showError(message) {
+            const el = document.getElementById('errorMessage');
+            el.textContent = message;
+            el.style.display = 'block';
+            setTimeout(() => el.style.display = 'none', 5000);
+        }
+
+        document.getElementById('saveProfileBtn')?.addEventListener('click', async () => {
+            const firstName = document.getElementById('userFirstName').value.trim();
+
+            if (!firstName) {
+                showError('Le prénom est requis');
+                return;
+            }
+
+            const { error } = await supabase
+                .from('profiles')
+                .update({ first_name: firstName })
+                .eq('id', currentUser.id);
+
+            if (error) {
+                showError('Erreur lors de la sauvegarde');
+                return;
+            }
+
+            showSuccess('Profil mis à jour');
+            document.getElementById('userName').textContent = firstName;
+        });
+
+        document.getElementById('toggleThemeBtn')?.addEventListener('click', () => {
+            const theme = document.documentElement.getAttribute('data-theme') || 'light';
+            const newTheme = theme === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            document.getElementById('themeToggle').textContent = newTheme === 'light' ? '🌙' : '☀️';
+            localStorage.setItem('meteorite_theme', newTheme);
+            showSuccess('Thème changé');
+        });
+
+        document.getElementById('logoutBtn')?.addEventListener('click', async () => {
+            await supabase.auth.signOut();
+            window.location.href = '/login.html';
+        });
+
+        document.getElementById('mobileMenuToggle')?.addEventListener('click', () => {
+            document.getElementById('navMenu').classList.toggle('active');
+        });
+
+        document.getElementById('themeToggle')?.addEventListener('click', () => {
+            const theme = document.documentElement.getAttribute('data-theme') || 'light';
+            const newTheme = theme === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            document.getElementById('themeToggle').textContent = newTheme === 'light' ? '🌙' : '☀️';
+        });
+
+        init();
+    </script>
+</body>
+</html>
