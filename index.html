@@ -1,151 +1,160 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Météorite - Météo en temps réel</title>
     <link rel="icon" type="image/x-icon" href="Logo_meteorite.png">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="background.css">
-    <title>Site Météorite</title>
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/components.css">
 </head>
-
 <body>
-        <!-- Global loader -->
-        <div id="site-loader" class="site-loader">
-            <div class="loader-inner">
-                <!-- From Uiverse.io by JkHuger -->
-                <div class="box-of-star1">
-                        <div class="star star-position1"></div>
-                        <div class="star star-position2"></div>
-                        <div class="star star-position3"></div>
-                        <div class="star star-position4"></div>
-                        <div class="star star-position5"></div>
-                        <div class="star star-position6"></div>
-                        <div class="star star-position7"></div>
-                </div>
-                <div class="box-of-star2">
-                        <div class="star star-position1"></div>
-                        <div class="star star-position2"></div>
-                        <div class="star star-position3"></div>
-                        <div class="star star-position4"></div>
-                        <div class="star star-position5"></div>
-                        <div class="star star-position6"></div>
-                        <div class="star star-position7"></div>
-                </div>
-                <div class="box-of-star3">
-                        <div class="star star-position1"></div>
-                        <div class="star star-position2"></div>
-                        <div class="star star-position3"></div>
-                        <div class="star star-position4"></div>
-                        <div class="star star-position5"></div>
-                        <div class="star star-position6"></div>
-                        <div class="star star-position7"></div>
-                </div>
-                <div class="box-of-star4">
-                        <div class="star star-position1"></div>
-                        <div class="star star-position2"></div>
-                        <div class="star star-position3"></div>
-                        <div class="star star-position4"></div>
-                        <div class="star star-position5"></div>
-                        <div class="star star-position6"></div>
-                        <div class="star star-position7"></div>
-                </div>
-                <div data-js="astro" class="astronaut">
-                        <div class="head"></div>
-                        <div class="arm arm-left"></div>
-                        <div class="arm arm-right"></div>
-                        <div class="body">
-                            <div class="panel"></div>
-                        </div>
-                        <div class="leg leg-left"></div>
-                        <div class="leg leg-right"></div>
-                        <div class="schoolbag"></div>
-                </div>
+    <!-- Loader Uiverse.io JkHuger/new-deer-97 -->
+    <div id="site-loader" class="site-loader">
+        <div class="loader-inner">
+            <div class="box-of-star1">
+                <div class="star star-position1"></div>
+                <div class="star star-position2"></div>
+                <div class="star star-position3"></div>
+                <div class="star star-position4"></div>
+                <div class="star star-position5"></div>
+                <div class="star star-position6"></div>
+                <div class="star star-position7"></div>
             </div>
-        </div>
-    <div id="stars"></div>
-    <div id="stars2"></div>
-    <div id="stars3"></div>
-        <!-- Astronaut in background, animated like stars -->
-        <div class="astronaut bg-astronaut" aria-hidden="true">
+            <div class="box-of-star2">
+                <div class="star star-position1"></div>
+                <div class="star star-position2"></div>
+                <div class="star star-position3"></div>
+                <div class="star star-position4"></div>
+                <div class="star star-position5"></div>
+                <div class="star star-position6"></div>
+                <div class="star star-position7"></div>
+            </div>
+            <div class="box-of-star3">
+                <div class="star star-position1"></div>
+                <div class="star star-position2"></div>
+                <div class="star star-position3"></div>
+                <div class="star star-position4"></div>
+                <div class="star star-position5"></div>
+                <div class="star star-position6"></div>
+                <div class="star star-position7"></div>
+            </div>
+            <div class="box-of-star4">
+                <div class="star star-position1"></div>
+                <div class="star star-position2"></div>
+                <div class="star star-position3"></div>
+                <div class="star star-position4"></div>
+                <div class="star star-position5"></div>
+                <div class="star star-position6"></div>
+                <div class="star star-position7"></div>
+            </div>
+            <div data-js="astro" class="astronaut">
                 <div class="head"></div>
                 <div class="arm arm-left"></div>
                 <div class="arm arm-right"></div>
-                <div class="body">
-                    <div class="panel"></div>
-                </div>
+                <div class="body"><div class="panel"></div></div>
                 <div class="leg leg-left"></div>
                 <div class="leg leg-right"></div>
                 <div class="schoolbag"></div>
-                <div class="strap-left"></div>
-                <div class="strap-right"></div>
-        </div>
-
-    <nav class="navbar">
-        <ul>
-            <li><a href="mapfrance.html" ><img src="drapeaufrance.png" alt="Map de France" class="icon-navbar"
-                        style="vertical-align:middle; height:1.2em; margin-right:0.3em;">Map météo France</a></li>
-            <li><a href="meteofrance.html" ><img src="meteofrance.png" alt="Météo de France" class="icon-navbar"
-                        style="vertical-align:middle; height:1.2em; margin-right:0.3em;">Recherche météo ville</a></li>
-            <li><a href="apropos.html" >À propos de nous</a></li>
-            
-        </ul>
-    </nav>
-
-    <header>
-        <div class="header-inner">
-            <img src="Logo_meteorite2.png" alt="Logo météorite" class="logo-animated">
-            <div>
-                <h1 class="titre">Météorite</h1>
-                <h3 class="subtitle">Site météorologique</h3>
             </div>
         </div>
+    </div>
 
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <img src="Logo_meteorite2.png" alt="Logo" class="logo-img">
+                <span class="logo-text">Météorite</span>
+            </div>
+            <nav class="nav-menu" id="navMenu">
+                <a href="/index.html" class="nav-link active">Météo</a>
+                <a href="/favorites.html" class="nav-link" id="favoritesLink">Favoris</a>
+                <a href="/alerts.html" class="nav-link" id="alertsLink">Alertes</a>
+                <a href="/settings.html" class="nav-link" id="settingsLink">Paramètres</a>
+            </nav>
+            <div class="user-actions">
+                <button class="theme-toggle" id="themeToggle" title="Changer de thème">��</button>
+                <div class="user-info" id="userInfo" style="display: none;">
+                    <span class="user-name" id="userName"></span>
+                    <button class="btn-logout" id="logoutBtn">Déconnexion</button>
+                </div>
+                <a href="/login.html" class="btn-login" id="loginBtn">Connexion</a>
+            </div>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">☰</button>
+        </div>
     </header>
 
-    <main>
-        <section id="about" class="center-content">
-            <h2>À propos du site</h2>
-            <p>Nous vous donnons votre météo locale à tout instant.</p>
-        </section>
+    <main class="main-content">
+        <div class="container">
+            <!-- Barre de recherche Uiverse.io KSAplay/bitter-panther-69 -->
+            <div class="search-section">
+                <div class="search-wrapper">
+                    <input type="text" class="search-input" id="citySearch" placeholder="Rechercher une ville...">
+                    <button class="btn-search" id="searchBtn">Rechercher</button>
+                    <button class="btn-geoloc" id="geolocBtn">📍 Ma position</button>
+                </div>
+            </div>
+
+            <div id="errorMessage" class="error-message" style="display: none;"></div>
+            <div id="successMessage" class="success-message" style="display: none;"></div>
+
+            <!-- Carte météo principale Uiverse.io youranonone10/young-otter-44 -->
+            <div class="weather-card-container">
+                <div class="weather-card" id="weatherCard">
+                    <div class="weather-card-inner">
+                        <div class="weather-location" id="weatherLocation">Paris</div>
+                        <div class="weather-date" id="weatherDate"></div>
+
+                        <div class="weather-main">
+                            <div class="weather-icon" id="weatherIcon">☀️</div>
+                            <div class="weather-temp" id="weatherTemp">--°C</div>
+                            <div class="weather-description" id="weatherDescription">Chargement...</div>
+                        </div>
+
+                        <div class="weather-details">
+                            <div class="weather-detail-item">
+                                <div class="weather-detail-label">Précipitations</div>
+                                <div class="weather-detail-value" id="weatherPrecip">-- mm</div>
+                            </div>
+                            <div class="weather-detail-item">
+                                <div class="weather-detail-label">Vent</div>
+                                <div class="weather-detail-value" id="weatherWind">-- km/h</div>
+                            </div>
+                            <div class="weather-detail-item">
+                                <div class="weather-detail-label">Humidité</div>
+                                <div class="weather-detail-value" id="weatherHumidity">65%</div>
+                            </div>
+                        </div>
+
+                        <button class="btn-add-favorite" id="addFavoriteBtn" style="display: none;">
+                            Ajouter aux favoris
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Historique des recherches -->
+            <div id="historySection" class="history-section" style="display: none;">
+                <h3 class="section-title">Recherches récentes</h3>
+                <div id="historyContainer" class="history-container"></div>
+            </div>
+
+            <!-- Prévisions sur 7 jours -->
+            <div id="forecastSection" class="forecast-section" style="display: none;">
+                <h2 class="section-title">Prévisions sur 7 jours</h2>
+                <div class="forecast-grid" id="forecastContainer"></div>
+            </div>
+        </div>
     </main>
 
-    <footer>
-        <p>&copy; 2025 Site Météorite</p>
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2025 Météorite - Application météo moderne</p>
+            <p>Développé par Nathan, Mathéo, Julien et Rayen</p>
+            <p><small>Données: Open-Meteo API</small></p>
+        </div>
     </footer>
 
-    <script>
-      function createStars(id, count, size) {
-        const stars = [];
-        for (let i = 0; i < count; i++) {
-          const x = Math.floor(Math.random() * 2000);
-          const y = Math.floor(Math.random() * 2000);
-          stars.push(`${x}px ${y}px #FFF`);
-        }
-        const el = document.getElementById(id);
-        el.style.width = size + 'px';
-        el.style.height = size + 'px';
-        el.style.boxShadow = stars.join(', ');
-      }
-
-      createStars('stars', 200, 1);   // Petites étoiles (200)
-      createStars('stars2', 100, 2);  // Moyennes (100)
-      createStars('stars3', 50, 3);   // Grosses (50)
-    </script>
-        <script>
-            // Hide loader on full load
-            function hideSiteLoader(){
-                const loader = document.getElementById('site-loader');
-                if(!loader) return;
-                loader.classList.add('hidden');
-                setTimeout(()=> loader.remove(), 600);
-            }
-            if(document.readyState === 'complete') hideSiteLoader();
-            window.addEventListener('load', hideSiteLoader);
-            // Fallback: hide after 6s in case of slow load
-            setTimeout(hideSiteLoader, 6000);
-        </script>
+    <script type="module" src="/assets/js/index.js"></script>
 </body>
-
 </html>
