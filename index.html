@@ -87,10 +87,18 @@
 
     <main class="main-content">
         <div class="container">
+            <!-- Lien vers la carte -->
+            <div style="text-align: center; margin-bottom: 30px;">
+                <a href="/carte.html" style="display: inline-flex; align-items: center; gap: 10px; padding: 15px 30px; background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue)); color: white; text-decoration: none; border-radius: 50px; font-weight: 600; font-size: 16px; box-shadow: 0 4px 12px rgba(0, 92, 153, 0.3); transition: all 0.3s;">
+                    🗺️ Voir la Carte de France
+                </a>
+            </div>
+
             <!-- Barre de recherche Uiverse.io KSAplay/bitter-panther-69 -->
             <div class="search-section">
-                <div class="search-wrapper">
-                    <input type="text" class="search-input" id="citySearch" placeholder="Rechercher une ville...">
+                <div class="search-wrapper" style="position: relative;">
+                    <input type="text" class="search-input" id="citySearch" placeholder="Rechercher une ville..." autocomplete="off">
+                    <div id="autocompleteList" class="autocomplete-list" style="display: none;"></div>
                     <button class="btn-search" id="searchBtn">Rechercher</button>
                     <button class="btn-geoloc" id="geolocBtn">📍 Ma position</button>
                 </div>

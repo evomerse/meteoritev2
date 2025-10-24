@@ -39,9 +39,21 @@ async function init() {
 
 function setupEventListeners() {
     document.getElementById('searchBtn')?.addEventListener('click', handleSearch);
-    document.getElementById('citySearch')?.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') handleSearch();
-    });
+
+    const cityInput = document.getElementById('citySearch');
+    if (cityInput) {
+        cityInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleSearch();
+        });
+        cityInput.addEventListener('input', handleAutocomplete);
+        cityInput.addEventListener('focus', handleAutocomplete);
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.search-wrapper')) {
+                hideAutocomplete();
+            }
+        });
+    }
+
     document.getElementById('geolocBtn')?.addEventListener('click', handleGeolocation);
     document.getElementById('themeToggle')?.addEventListener('click', toggleTheme);
     document.getElementById('mobileMenuToggle')?.addEventListener('click', toggleMobileMenu);
@@ -51,6 +63,115 @@ function setupEventListeners() {
 
 function toggleMobileMenu() {
     document.getElementById('navMenu')?.classList.toggle('active');
+}
+
+const popularCities = [
+    { name: 'Paris', country: 'France', lat: 48.8566, lon: 2.3522 },
+    { name: 'Marseille', country: 'France', lat: 43.2965, lon: 5.3698 },
+    { name: 'Lyon', country: 'France', lat: 45.7640, lon: 4.8357 },
+    { name: 'Toulouse', country: 'France', lat: 43.6047, lon: 1.4442 },
+    { name: 'Nice', country: 'France', lat: 43.7102, lon: 7.2620 },
+    { name: 'Nantes', country: 'France', lat: 47.2184, lon: -1.5536 },
+    { name: 'Strasbourg', country: 'France', lat: 48.5734, lon: 7.7521 },
+    { name: 'Bordeaux', country: 'France', lat: 44.8378, lon: -0.5792 },
+    { name: 'Lille', country: 'France', lat: 50.6292, lon: 3.0573 },
+    { name: 'Rennes', country: 'France', lat: 48.1173, lon: -1.6778 },
+    { name: 'Montpellier', country: 'France', lat: 43.6108, lon: 3.8767 },
+    { name: 'Reims', country: 'France', lat: 49.2583, lon: 4.0317 },
+    { name: 'Le Havre', country: 'France', lat: 49.4944, lon: 0.1079 },
+    { name: 'Dijon', country: 'France', lat: 47.3220, lon: 5.0415 },
+    { name: 'Grenoble', country: 'France', lat: 45.1885, lon: 5.7245 },
+    { name: 'Angers', country: 'France', lat: 47.4784, lon: -0.5632 },
+    { name: 'Toulon', country: 'France', lat: 43.1242, lon: 5.9280 },
+    { name: 'Brest', country: 'France', lat: 48.3904, lon: -4.4861 },
+    { name: 'Clermont-Ferrand', country: 'France', lat: 45.7772, lon: 3.0870 },
+    { name: 'Rouen', country: 'France', lat: 49.4432, lon: 1.0993 }
+];
+
+let autocompleteTimeout;
+
+async function handleAutocomplete(e) {
+    clearTimeout(autocompleteTimeout);
+    const query = e.target.value.trim().toLowerCase();
+
+    if (query.length < 2) {
+        hideAutocomplete();
+        return;
+    }
+
+    autocompleteTimeout = setTimeout(async () => {
+        const filtered = popularCities.filter(city =>
+            city.name.toLowerCase().startsWith(query) ||
+            city.name.toLowerCase().includes(query)
+        ).slice(0, 8);
+
+        if (query.length >= 3) {
+            try {
+                const response = await fetch(
+                    `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=5&accept-language=fr`
+                );
+                const data = await response.json();
+
+                const apiCities = data
+                    .filter(item => item.type === 'city' || item.type === 'town' || item.type === 'village')
+                    .map(item => ({
+                        name: item.name || item.display_name.split(',')[0],
+                        country: item.display_name.split(',').pop().trim(),
+                        lat: parseFloat(item.lat),
+                        lon: parseFloat(item.lon)
+                    }));
+
+                const combined = [...filtered];
+                apiCities.forEach(apiCity => {
+                    if (!combined.some(c => c.name === apiCity.name)) {
+                        combined.push(apiCity);
+                    }
+                });
+
+                showAutocomplete(combined.slice(0, 10));
+            } catch (error) {
+                showAutocomplete(filtered);
+            }
+        } else {
+            showAutocomplete(filtered);
+        }
+    }, 300);
+}
+
+function showAutocomplete(cities) {
+    const list = document.getElementById('autocompleteList');
+    if (!list || cities.length === 0) {
+        hideAutocomplete();
+        return;
+    }
+
+    list.innerHTML = cities.map(city => `
+        <div class="autocomplete-item" data-city="${city.name}" data-lat="${city.lat}" data-lon="${city.lon}">
+            <span class="autocomplete-city">${city.name}</span>
+            <span class="autocomplete-country">${city.country}</span>
+        </div>
+    `).join('');
+
+    list.querySelectorAll('.autocomplete-item').forEach(item => {
+        item.addEventListener('click', () => {
+            const cityName = item.dataset.city;
+            const lat = parseFloat(item.dataset.lat);
+            const lon = parseFloat(item.dataset.lon);
+
+            document.getElementById('citySearch').value = cityName;
+            loadWeather(lat, lon, false, cityName);
+            hideAutocomplete();
+        });
+    });
+
+    list.style.display = 'block';
+}
+
+function hideAutocomplete() {
+    const list = document.getElementById('autocompleteList');
+    if (list) {
+        list.style.display = 'none';
+    }
 }
 
 async function loadDefaultWeather() {

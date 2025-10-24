@@ -178,6 +178,52 @@ body {
   border: 2px solid var(--primary-blue);
 }
 
+/* AUTOCOMPLETE */
+.autocomplete-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--white);
+  border: 2px solid var(--primary-blue);
+  border-top: none;
+  border-radius: 0 0 20px 20px;
+  max-height: 300px;
+  overflow-y: auto;
+  z-index: 1000;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  margin-top: -15px;
+  padding-top: 15px;
+}
+
+.autocomplete-item {
+  padding: 12px 20px;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.autocomplete-item:hover {
+  background: var(--light-gray);
+}
+
+.autocomplete-item:last-child {
+  border-radius: 0 0 18px 18px;
+}
+
+.autocomplete-city {
+  font-weight: 600;
+  color: var(--dark-blue);
+}
+
+.autocomplete-country {
+  font-size: 14px;
+  color: var(--text-light);
+  margin-left: 10px;
+}
+
 /* WEATHER CARD */
 .weather-card-container {
   display: flex;
