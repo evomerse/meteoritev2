@@ -59,6 +59,7 @@ function setupEventListeners() {
     document.getElementById('mobileMenuToggle')?.addEventListener('click', toggleMobileMenu);
     document.getElementById('logoutBtn')?.addEventListener('click', handleLogout);
     document.getElementById('addFavoriteBtn')?.addEventListener('click', handleAddFavorite);
+    document.getElementById('addAlertBtn')?.addEventListener('click', handleAddAlert);
 }
 
 function toggleMobileMenu() {
@@ -231,12 +232,19 @@ async function loadWeather(latitude, longitude, isCurrentPosition = false, cityN
         displayWeather(weatherData, cityName || 'Position actuelle');
 
         if (currentUser) {
+            const weatherActions = document.getElementById('weatherActions');
+            if (weatherActions) {
+                weatherActions.style.display = 'flex';
+            }
+
             const favorite = await isFavorite(currentUser.id, currentLocation.city);
             const btn = document.getElementById('addFavoriteBtn');
             if (btn) {
-                btn.style.display = 'block';
-                btn.textContent = favorite ? 'Déjà dans les favoris' : 'Ajouter aux favoris';
+                btn.textContent = favorite ? '⭐ Déjà en favoris' : '⭐ Ajouter aux favoris';
                 btn.disabled = favorite;
+                if (favorite) {
+                    btn.classList.add('active');
+                }
             }
         }
     } catch (error) {
@@ -324,12 +332,110 @@ async function handleAddFavorite() {
         showSuccess('Ajouté aux favoris');
         const btn = document.getElementById('addFavoriteBtn');
         if (btn) {
-            btn.textContent = 'Déjà dans les favoris';
+            btn.textContent = '⭐ Déjà en favoris';
             btn.disabled = true;
+            btn.classList.add('active');
         }
     } catch {
         showError('Erreur');
     }
+}
+
+async function handleAddAlert() {
+    if (!currentUser) {
+        showError('Veuillez vous connecter');
+        return;
+    }
+
+    const modal = createAlertModal();
+    document.body.appendChild(modal);
+    setTimeout(() => modal.classList.add('active'), 10);
+}
+
+function createAlertModal() {
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    overlay.innerHTML = `
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Créer une alerte pour ${currentLocation.city}</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Type d'alerte</label>
+                    <select class="form-select" id="alertType">
+                        <option value="rain">Pluie</option>
+                        <option value="wind">Vent</option>
+                        <option value="temperature">Température</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Condition</label>
+                    <select class="form-select" id="alertOperator">
+                        <option value=">">Supérieur à</option>
+                        <option value="<">Inférieur à</option>
+                        <option value=">=">Supérieur ou égal à</option>
+                        <option value="<=">Inférieur ou égal à</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Valeur</label>
+                    <input type="number" class="form-input" id="alertValue" placeholder="Ex: 10" step="0.1">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary modal-cancel">Annuler</button>
+                <button class="btn-primary modal-submit">Créer l'alerte</button>
+            </div>
+        </div>
+    `;
+
+    overlay.querySelector('.modal-close').addEventListener('click', () => closeModal(overlay));
+    overlay.querySelector('.modal-cancel').addEventListener('click', () => closeModal(overlay));
+    overlay.querySelector('.modal-submit').addEventListener('click', () => submitAlert(overlay));
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) closeModal(overlay);
+    });
+
+    return overlay;
+}
+
+function closeModal(overlay) {
+    overlay.classList.remove('active');
+    setTimeout(() => overlay.remove(), 300);
+}
+
+async function submitAlert(overlay) {
+    const type = document.getElementById('alertType').value;
+    const operator = document.getElementById('alertOperator').value;
+    const value = parseFloat(document.getElementById('alertValue').value);
+
+    if (isNaN(value)) {
+        showError('Valeur invalide');
+        return;
+    }
+
+    try {
+        await addAlert(currentUser.id, currentLocation.city, currentLocation.lat, currentLocation.lon, type, operator, value);
+        showSuccess('Alerte créée avec succès');
+        closeModal(overlay);
+    } catch {
+        showError('Erreur lors de la création de l\'alerte');
+    }
+}
+
+async function addAlert(userId, cityName, latitude, longitude, alertType, conditionOperator, conditionValue) {
+    const { error } = await supabase.from('alerts').insert([{
+        user_id: userId,
+        city_name: cityName,
+        latitude,
+        longitude,
+        alert_type: alertType,
+        condition_operator: conditionOperator,
+        condition_value: conditionValue
+    }]);
+    if (error) throw error;
 }
 
 async function handleLogout() {
