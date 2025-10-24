@@ -110,6 +110,7 @@ body {
   cursor: pointer;
 }
 
+.btn-register,
 .btn-login,
 .btn-logout {
   padding: 8px 20px;
@@ -120,6 +121,18 @@ body {
   color: var(--dark-blue);
   background: transparent;
   text-decoration: none;
+  transition: all 0.3s;
+}
+
+.btn-register {
+  background: var(--primary-blue);
+  color: var(--white);
+  border-color: var(--primary-blue);
+}
+
+.btn-register:hover {
+  background: var(--dark-blue);
+  border-color: var(--dark-blue);
 }
 
 .btn-login:hover,

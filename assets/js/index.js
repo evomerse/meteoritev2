@@ -18,10 +18,10 @@ async function init() {
         if (profile) {
             document.getElementById('userName').textContent = profile.first_name || profile.email;
             document.getElementById('userInfo').style.display = 'flex';
-            document.getElementById('loginBtn').style.display = 'none';
+            document.getElementById('authButtons').style.display = 'none';
         }
     } else {
-        document.getElementById('loginBtn').style.display = 'inline-block';
+        document.getElementById('authButtons').style.display = 'flex';
     }
 
     setupEventListeners();
