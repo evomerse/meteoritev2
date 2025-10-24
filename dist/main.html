@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Météorite - Météo en temps réel</title>
+  <script type="module" crossorigin src="/assets/main-C-TSgjSU.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/components-BVSRcDa7.js">
+  <link rel="modulepreload" crossorigin href="/assets/supabase-client-DwhNdNLI.js">
+  <link rel="modulepreload" crossorigin href="/assets/weather-api-C0BSZ2bx.js">
+  <link rel="modulepreload" crossorigin href="/assets/favorites-CsT8pkBu.js">
+  <link rel="modulepreload" crossorigin href="/assets/storage-xgazSgyw.js">
+  <link rel="stylesheet" crossorigin href="/assets/components-CKSGaSTJ.css">
+</head>
+<body>
+    <div class="loader-wrapper" id="loader">
+        <div class="loader"></div>
+    </div>
+
+    <header>
+        <div class="header-content">
+            <a href="/main.html" class="logo">
+                <span class="logo-text">Météorite</span>
+            </a>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">☰</button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="/main.html" class="nav-link active">Météo</a></li>
+                <li><a href="/favorites-page.html" class="nav-link" id="favoritesLink">Favoris</a></li>
+                <li><a href="/alerts-page.html" class="nav-link" id="alertsLink">Alertes</a></li>
+                <li><a href="/settings-page.html" class="nav-link" id="settingsLink">Paramètres</a></li>
+            </ul>
+            <div class="user-info" id="userInfo">
+                <button class="theme-toggle" id="themeToggle">🌙</button>
+                <span class="user-name" id="userName"></span>
+                <button class="btn-logout" id="logoutBtn" style="display: none;">Déconnexion</button>
+                <a href="/login-page.html" class="btn-login" id="loginBtn">Connexion</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="search-container">
+                <div class="search-wrapper">
+                    <div class="search-box">
+                        <input type="text" class="search-input" id="citySearch" placeholder="Rechercher une ville...">
+                    </div>
+                    <button class="btn-search" id="searchBtn">Rechercher</button>
+                    <button class="btn-geoloc" id="geolocBtn">Ma position</button>
+                </div>
+            </div>
+
+            <div id="errorMessage" style="display: none;"></div>
+            <div id="successMessage" style="display: none;"></div>
+
+            <div style="display: flex; justify-content: center; margin-bottom: 30px;">
+                <div class="weather-card" id="weatherCard">
+                    <div class="weather-card-content">
+                        <div class="weather-location" id="weatherLocation">Paris</div>
+                        <div class="weather-date" id="weatherDate"></div>
+
+                        <div class="weather-main">
+                            <div class="weather-icon" id="weatherIcon">☀️</div>
+                            <div class="weather-temp" id="weatherTemp">--°C</div>
+                            <div class="weather-description" id="weatherDescription">Chargement...</div>
+                        </div>
+
+                        <div class="weather-details">
+                            <div class="weather-detail-item">
+                                <div class="weather-detail-label">Précipitations</div>
+                                <div class="weather-detail-value" id="weatherPrecip">-- mm</div>
+                            </div>
+                            <div class="weather-detail-item">
+                                <div class="weather-detail-label">Vent</div>
+                                <div class="weather-detail-value" id="weatherWind">-- km/h</div>
+                            </div>
+                            <div class="weather-detail-item">
+                                <div class="weather-detail-label">Humidité</div>
+                                <div class="weather-detail-value" id="weatherHumidity">--%</div>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 20px; text-align: center;">
+                            <button class="btn-primary" id="addFavoriteBtn" style="display: none;">Ajouter aux favoris</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="historySection" style="max-width: 600px; margin: 0 auto 30px; display: none;">
+                <h3 style="color: var(--dark-blue); margin-bottom: 15px;">Recherches récentes</h3>
+                <div id="historyContainer"></div>
+            </div>
+
+            <div id="forecastSection" style="display: none;">
+                <h2 style="text-align: center; color: var(--dark-blue); margin-bottom: 20px;">Prévisions sur 7 jours</h2>
+                <div class="grid grid-3" id="forecastContainer"></div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p class="footer-text">&copy; 2025 Météorite - Application météo moderne</p>
+            <p class="footer-text">Développé par Nathan, Mathéo, Julien et Rayen</p>
+            <ul class="footer-links">
+                <li><a href="#" class="footer-link">Données: Open-Meteo</a></li>
+                <li><a href="#" class="footer-link">Contact</a></li>
+            </ul>
+        </div>
+    </footer>
+
+</body>
+</html>

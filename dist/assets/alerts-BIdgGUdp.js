@@ -1,0 +1,25 @@
+import"./components-BVSRcDa7.js";import{d as c,g as h,a as B,s as I}from"./supabase-client-DwhNdNLI.js";import{c as w}from"./weather-api-C0BSZ2bx.js";import{g as T,s as A}from"./storage-xgazSgyw.js";import"https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/+esm";async function L(e){const{data:t,error:n}=await c.from("alerts").select("*").eq("user_id",e).order("created_at",{ascending:!1});if(n)throw n;return t}async function _(e,t,n,o,a,p,E){const{data:f,error:m}=await c.from("alerts").insert([{user_id:e,city_name:t,latitude:n,longitude:o,alert_type:a,condition_operator:p,condition_value:parseFloat(E),is_active:!0}]).select().maybeSingle();if(m)throw m;return f}async function b(e){const{error:t}=await c.from("alerts").delete().eq("id",e);if(t)throw t}function u(e){return{rain:"Pluie",wind:"Vent",temperature:"Température"}[e]||e}function y(e){return{rain:"mm",wind:"km/h",temperature:"°C"}[e]||""}let i=null,r=null;async function C(){if(i=await h(),!i){document.getElementById("loginRequired").style.display="block",document.getElementById("alertsContent").style.display="none",setTimeout(()=>document.getElementById("loader").classList.add("hidden"),500);return}r=await B(i.id),r&&(document.getElementById("userName").textContent=r.first_name||r.email,g(r.theme_preference||T())),document.getElementById("alertsContent").style.display="block",k(),await d(),setTimeout(()=>document.getElementById("loader").classList.add("hidden"),500)}function k(){document.getElementById("createAlertBtn").addEventListener("click",$),document.getElementById("closeModalBtn").addEventListener("click",s),document.getElementById("cancelAlertBtn").addEventListener("click",s),document.getElementById("saveAlertBtn").addEventListener("click",x),document.getElementById("logoutBtn").addEventListener("click",U),document.getElementById("themeToggle").addEventListener("click",V),document.getElementById("mobileMenuToggle").addEventListener("click",()=>document.getElementById("navMenu").classList.toggle("active")),document.getElementById("alertType").addEventListener("change",()=>{const e=document.getElementById("alertType").value,t=document.getElementById("alertUnit");t.textContent=e?`Unité: ${y(e)}`:""}),document.getElementById("alertModal").addEventListener("click",e=>{e.target.id==="alertModal"&&s()})}async function d(){try{const e=await L(i.id);M(e)}catch{l("Erreur lors du chargement des alertes")}}function M(e){const t=document.getElementById("alertsContainer");if(!e||e.length===0){t.innerHTML=`
+      <div class="empty-state">
+        <div class="empty-state-icon">🔔</div>
+        <div class="empty-state-title">Aucune alerte configurée</div>
+        <div class="empty-state-text">Créez des alertes pour être notifié</div>
+      </div>
+    `;return}t.innerHTML=e.map(n=>`
+    <div class="alert-card ${n.alert_type}">
+      <div class="alert-card-header">
+        <div class="alert-type">${u(n.alert_type)}</div>
+        <span class="alert-status ${n.is_active?"active":"inactive"}">
+          ${n.is_active?"Active":"Inactive"}
+        </span>
+      </div>
+      <div class="alert-card-body">
+        <div class="alert-location">${n.city_name}</div>
+        <div class="alert-condition">
+          ${u(n.alert_type)} ${n.condition_operator} ${n.condition_value} ${y(n.alert_type)}
+        </div>
+      </div>
+      <div class="alert-card-footer">
+        <button class="btn-danger" onclick="window.deleteAlertConfirm('${n.id}')">Supprimer</button>
+      </div>
+    </div>
+  `).join("")}window.deleteAlertConfirm=async function(e){if(confirm("Supprimer cette alerte ?"))try{await b(e),v("Alerte supprimée"),await d()}catch{l("Erreur lors de la suppression")}};function $(){document.getElementById("alertModal").classList.add("active")}function s(){document.getElementById("alertModal").classList.remove("active"),document.getElementById("alertForm").reset(),document.getElementById("alertUnit").textContent=""}async function x(){const e=document.getElementById("alertCity").value.trim(),t=document.getElementById("alertType").value,n=document.getElementById("alertOperator").value,o=document.getElementById("alertValue").value;if(!e||!t||!n||!o){l("Veuillez remplir tous les champs");return}try{const a=await w(e);await _(i.id,a.name,a.latitude,a.longitude,t,n,o),v("Alerte créée"),s(),await d()}catch(a){l(a.message==="Ville introuvable"?"Ville introuvable":"Erreur lors de la création")}}async function U(){try{await I(),window.location.href="/main.html"}catch{l("Erreur lors de la déconnexion")}}function V(){const t=(document.documentElement.getAttribute("data-theme")||"light")==="light"?"dark":"light";g(t),A(t)}function g(e){document.documentElement.setAttribute("data-theme",e),document.getElementById("themeToggle").textContent=e==="light"?"🌙":"☀️"}function l(e){const t=document.getElementById("errorMessage");t.textContent=e,t.className="error-message",t.style.display="block",setTimeout(()=>t.style.display="none",5e3)}function v(e){const t=document.getElementById("successMessage");t.textContent=e,t.className="success-message",t.style.display="block",setTimeout(()=>t.style.display="none",5e3)}C();
