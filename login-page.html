@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - Météorite</title>
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/components.css">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-logo">
+                <div class="auth-logo-text">Météorite</div>
+            </div>
+
+            <h1 class="auth-title">Connexion</h1>
+
+            <div id="errorMessage" style="display: none;"></div>
+
+            <form class="auth-form" id="loginForm">
+                <div class="form-group">
+                    <label class="form-label" for="email">Email</label>
+                    <input type="email" class="form-input" id="email" required placeholder="votre@email.com">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">Mot de passe</label>
+                    <input type="password" class="form-input" id="password" required placeholder="••••••••">
+                </div>
+
+                <button type="submit" class="btn-primary" style="width: 100%;">Se connecter</button>
+            </form>
+
+            <div class="auth-link">
+                Pas encore de compte ? <a href="/register-page.html">S'inscrire</a>
+            </div>
+
+            <div class="auth-link">
+                <a href="/main.html">Continuer sans compte</a>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="/assets/js/login.js"></script>
+</body>
+</html>
