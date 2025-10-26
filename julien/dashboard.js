@@ -41,7 +41,7 @@ const weatherMap = [
   { codes: [95, 96, 99], desc: 'Orage', icon: '⛈️' },
 ];
 function codeToInfo(code) {
-  return weatherMap.find(x => x.codes.includes(code)) || { desc: '—', icon: '⛅' };
+  return weatherMap.find(x => x.codes.includes(code)) || { desc: '-', icon: '⛅' };
 }
 
 async function geocode(q) {
@@ -205,7 +205,7 @@ function setupEventListeners(user) {
             const btn = document.createElement('button');
             btn.textContent = `${city.name}${
               city.admin1 ? ', ' + city.admin1 : ''
-            } — ${city.country}`;
+            } - ${city.country}`;
             btn.addEventListener('click', () => {
               saveDefaultCity(user, city);
               els.searchInput.value = '';

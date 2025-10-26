@@ -1,4 +1,4 @@
-// Météorite v1 — client only, API Open‑Meteo (pas de clé nécessaire)
+// Météorite v1 - client only, API Open‑Meteo (pas de clé nécessaire)
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
 const supabaseUrl = 'https://djpigduzgtzlktpyhhgf.supabase.co';
@@ -50,7 +50,7 @@ const weatherMap = [
 ];
 function codeToInfo(code){
   const m = weatherMap.find(x=>x.codes.includes(code));
-  return m || {desc:'—', icon:'⛅'};
+  return m || {desc:'-', icon:'⛅'};
 }
 
 async function geocode(q){
@@ -85,7 +85,7 @@ function renderSuggestions(list){
     const btn = document.createElement('button');
     btn.type='button';
     btn.setAttribute('role','option');
-    btn.textContent = `${c.name}${c.admin1 ? ', ' + c.admin1 : ''} — ${c.country}`;
+    btn.textContent = `${c.name}${c.admin1 ? ', ' + c.admin1 : ''} - ${c.country}`;
     btn.addEventListener('click', ()=>{
       selectPlace(c);
       box.classList.remove('show');

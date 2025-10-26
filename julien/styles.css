@@ -1,4 +1,4 @@
-/* 🌌 Météorite v3 — effet Liquid Glass façon Apple */
+/* 🌌 Météorite v3 - effet Liquid Glass façon Apple */
 
 :root {
   --bg: #0f1222;
@@ -47,7 +47,7 @@ h1 {
   color: var(--muted);
 }
 
-/* RECHERCHE — style Apple glass */
+/* RECHERCHE - style Apple glass */
 #search-form {
   margin: 0 auto;
   display: flex;
@@ -141,7 +141,7 @@ h1 {
   color: var(--muted);
 }
 
-/* CARTE PRINCIPALE — verre liquide */
+/* CARTE PRINCIPALE - verre liquide */
 .card {
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);

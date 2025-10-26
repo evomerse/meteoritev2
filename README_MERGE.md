@@ -1,4 +1,4 @@
-# Meteorite — Projet Fusionné (statique, prêt pour Vercel)
+# Meteorite - Projet Fusionné (statique, prêt pour Vercel)
 
 Ce dossier résulte de la fusion de vos deux projets :
 
@@ -18,7 +18,7 @@ Ce dossier résulte de la fusion de vos deux projets :
 ## Déploiement sur Vercel (statique)
 
 1. **Créer un nouveau projet Vercel** puis **Importer** ce dossier (ou pousser sur Git et connecter le repo).
-2. Framework : **Other** (Static Site). Build Command : *(vide)* — Output Directory : **/**.
+2. Framework : **Other** (Static Site). Build Command : *(vide)* - Output Directory : **/**.
 3. Déployer.
 
 ## Remarques importantes
