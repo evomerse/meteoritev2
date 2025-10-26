@@ -2,7 +2,7 @@ import { supabase } from './supabase-client.js';
 
 export async function getFavorites(userId) {
   const { data, error } = await supabase
-    .from('favorites')
+    .from('user_favorites')
     .select('*')
     .eq('user_id', userId)
     .order('created_at', { ascending: false });
@@ -16,7 +16,7 @@ export async function getFavorites(userId) {
 
 export async function addFavorite(userId, cityName, latitude, longitude) {
   const { data, error } = await supabase
-    .from('favorites')
+    .from('user_favorites')
     .insert([
       {
         user_id: userId,
@@ -37,7 +37,7 @@ export async function addFavorite(userId, cityName, latitude, longitude) {
 
 export async function removeFavorite(favoriteId) {
   const { error } = await supabase
-    .from('favorites')
+    .from('user_favorites')
     .delete()
     .eq('id', favoriteId);
 
@@ -48,7 +48,7 @@ export async function removeFavorite(favoriteId) {
 
 export async function isFavorite(userId, cityName) {
   const { data, error } = await supabase
-    .from('favorites')
+    .from('user_favorites')
     .select('id')
     .eq('user_id', userId)
     .eq('city_name', cityName)

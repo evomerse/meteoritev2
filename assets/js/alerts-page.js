@@ -85,7 +85,7 @@ function displayAlerts(alerts) {
       <div class="alert-card-body">
         <div class="alert-location">${alert.city_name}</div>
         <div class="alert-condition">
-          ${getAlertTypeLabel(alert.alert_type)} ${alert.condition_operator} ${alert.condition_value} ${getAlertUnit(alert.alert_type)}
+          ${getAlertTypeLabel(alert.alert_type)} ${alert.operator} ${alert.threshold_value} ${getAlertUnit(alert.alert_type)}
         </div>
       </div>
       <div class="alert-card-footer">

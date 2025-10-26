@@ -1,5 +1,10 @@
 {
+  "version": 2,
   "rewrites": [
-    { "source": "/", "destination": "/main.html" }
-  ]
+    { "source": "/login.html", "destination": "/julien/login.html" },
+    { "source": "/register.html", "destination": "/julien/register.html" },
+    { "source": "/dashboard.html", "destination": "/julien/dashboard.html" },
+    { "source": "/settings.html", "destination": "/julien/settings.html" }
+  ],
+  "cleanUrls": true
 }

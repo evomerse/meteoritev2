@@ -1,0 +1,213 @@
+/* Effets de glassmorphisme et animations */
+.weather-card {
+  background: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+.search-input {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--text-dark);
+  transition: all 0.3s ease;
+}
+
+.search-input:focus {
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 15px rgba(112, 183, 255, 0.3);
+}
+
+.btn-search {
+  background: linear-gradient(45deg, var(--primary-blue), #4facfe);
+  box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
+  transition: all 0.3s ease;
+}
+
+.btn-search:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(79, 172, 254, 0.6);
+}
+
+/* Animation du logo */
+.logo-img {
+  transition: transform 0.3s ease;
+}
+
+.logo:hover .logo-img {
+  transform: rotate(15deg);
+}
+
+/* Effets de survol pour la navigation */
+.nav-link {
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--primary-blue);
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.nav-link:hover::after {
+  width: 80%;
+}
+
+/* Style amélioré pour les cartes météo */
+.current-main {
+  position: relative;
+  overflow: hidden;
+  padding: 20px;
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.1);
+  margin-bottom: 20px;
+}
+
+.current-icon {
+  font-size: 4em;
+  opacity: 0.8;
+  transition: transform 0.3s ease;
+}
+
+.current-icon:hover {
+  transform: scale(1.1);
+}
+
+.current-temp {
+  font-size: 3.5em;
+  font-weight: 700;
+  background: linear-gradient(45deg, var(--primary-blue), #4facfe);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* Grille des détails météo */
+.current-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 15px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+}
+
+.current-grid > div {
+  text-align: center;
+  padding: 15px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.current-grid > div:hover {
+  transform: translateY(-5px);
+}
+
+/* Animation de chargement */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.content:not([hidden]) {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* Style du fond étoilé */
+#stars, #stars2, #stars3 {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  transform: rotate(45deg);
+  z-index: -1;
+}
+
+/* Effet de parallaxe au scroll */
+.parallax-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Style amélioré pour le thème sombre */
+[data-theme="dark"] {
+  --primary-gradient: linear-gradient(45deg, #1a1f2c, #2d3436);
+  --card-bg: rgba(45, 52, 54, 0.8);
+  --text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="dark"] .weather-card {
+  background: var(--card-bg) !important;
+}
+
+[data-theme="dark"] .current-main {
+  background: rgba(45, 52, 54, 0.5);
+}
+
+/* Responsive design amélioré */
+@media (max-width: 768px) {
+  .search-section {
+    padding: 0 15px;
+  }
+  
+  .current-temp {
+    font-size: 2.5em;
+  }
+  
+  .current-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Animations des suggestions de recherche */
+.suggestions {
+  transform-origin: top;
+  transition: all 0.3s ease;
+}
+
+.suggestions:not(:empty) {
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from { 
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Style amélioré pour le header */
+.header {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Effet de pulsation pour le bouton de recherche */
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(79, 172, 254, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(79, 172, 254, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(79, 172, 254, 0); }
+}
+
+.btn-search:focus {
+  animation: pulse 1.5s infinite;
+}

@@ -1,88 +1,312 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Paramètres - Météorite</title>
-    <link rel="stylesheet" href="/assets/css/main.css">
-    <link rel="stylesheet" href="/assets/css/components.css">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Paramètres — Météorite Fusion</title>
+<link href="/julien/background.css" rel="stylesheet"/>
+<link href="/assets/css/main.css" rel="stylesheet"/>
+<link href="/assets/css/components.css" rel="stylesheet"/>
+<link href="/julien/styles.css" rel="stylesheet"/>
+<link href="/assets/css/merge-adapter.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<script>
+(function(){
+  try {
+    const theme = localStorage.getItem('meteorite_theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', theme);
+  } catch(e) {}
+})();
+</script>
+<style>
+body {
+  background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%) !important;
+  min-height: 100vh;
+  position: relative;
+}
+.header {
+  background: rgba(255, 255, 255, 0.08) !important;
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+[data-theme="light"] .header {
+  background: rgba(255, 255, 255, 0.95) !important;
+}
+[data-theme="light"] body {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+}
+
+.settings-container {
+  position: relative;
+  z-index: 10;
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.page-title {
+  text-align: center;
+  color: var(--text-dark);
+  font-size: clamp(28px, 5vw, 42px);
+  margin-bottom: 40px;
+}
+
+.login-required {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.login-btn {
+  display: inline-block;
+  padding: 12px 32px;
+  background: var(--primary-blue);
+  color: white;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 600;
+  margin-top: 20px;
+  transition: all 0.3s;
+}
+
+.login-btn:hover {
+  background: var(--dark-blue);
+  transform: translateY(-2px);
+}
+
+.settings-section {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 24px;
+  padding: 30px;
+  margin-bottom: 24px;
+  backdrop-filter: blur(30px) saturate(160%);
+}
+
+.settings-section h2 {
+  color: var(--text-dark);
+  font-size: 22px;
+  margin-bottom: 24px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  color: var(--text-light);
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 12px;
+  color: var(--text-dark);
+  font-size: 15px;
+  outline: none;
+  transition: all 0.3s;
+}
+
+.form-input:focus {
+  border-color: var(--primary-blue);
+  box-shadow: 0 0 15px rgba(122, 162, 255, 0.2);
+}
+
+.form-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  padding: 12px 32px;
+  background: var(--primary-blue);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-primary:hover {
+  background: var(--dark-blue);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.appearance-toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.appearance-info h3 {
+  color: var(--text-dark);
+  font-size: 18px;
+  margin-bottom: 4px;
+}
+
+.appearance-info p {
+  color: var(--text-light);
+  font-size: 14px;
+}
+
+.toggle-switch {
+  position: relative;
+  width: 60px;
+  height: 30px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50px;
+  transition: 0.3s;
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.3s;
+}
+
+input:checked + .toggle-slider {
+  background: var(--primary-blue);
+}
+
+input:checked + .toggle-slider:before {
+  transform: translateX(30px);
+}
+</style>
 </head>
 <body>
-    <div class="loader-wrapper" id="loader">
-        <div class="loader"></div>
+
+<div id="stars"></div>
+<div id="stars2"></div>
+<div id="stars3"></div>
+
+<header class="header">
+<div class="header-content">
+<div class="logo">
+<img alt="Logo" class="logo-img" src="/assets/images/Logo_meteorite2.png"/>
+<span class="logo-text">Météorite</span>
+</div>
+<nav class="nav-menu" id="navMenu">
+<a class="nav-link" href="/index.html">Météo</a>
+<a class="nav-link" href="/carte.html">Carte</a>
+<a class="nav-link" href="/favorites-page.html">Favoris</a>
+<a class="nav-link" href="/alerts-page.html">Alertes</a>
+<a class="nav-link active" href="/settings-page.html">Paramètres</a>
+</nav>
+<div class="user-actions">
+<button class="theme-toggle" id="themeToggle" title="Changer de thème">🌙</button>
+<div class="user-info" id="userInfo" style="display: none;">
+<span class="user-name" id="userName"></span>
+<button class="btn-logout" id="logoutBtn">Déconnexion</button>
+</div>
+<div id="authButtons" style="display: flex; gap: 10px;">
+<a class="btn-register" href="/julien/register.html">Inscription</a>
+<a class="btn-login" href="/julien/login.html">Connexion</a>
+</div>
+</div>
+<button class="mobile-menu-toggle" id="mobileMenuToggle">☰</button>
+</div>
+</header>
+
+<div class="settings-container">
+  <h1 class="page-title">⚙️ Paramètres</h1>
+
+  <div id="loginRequired" class="login-required" style="display: none;">
+    <div style="font-size: 100px; margin-bottom: 20px;">🔒</div>
+    <h2 style="color: var(--text-dark); margin-bottom: 12px;">Connexion requise</h2>
+    <p style="color: var(--text-light);">Connectez-vous pour accéder aux paramètres</p>
+    <a href="/julien/login.html" class="login-btn">Se connecter</a>
+  </div>
+
+  <div id="settingsContent" style="display: none;">
+    <div class="settings-section">
+      <h2>👤 Compte</h2>
+
+      <div id="errorMessage" style="display: none; padding: 12px; margin-bottom: 16px; background: rgba(255, 80, 80, 0.2); border-radius: 12px; color: #ff5252; text-align: center;"></div>
+      <div id="successMessage" style="display: none; padding: 12px; margin-bottom: 16px; background: rgba(80, 255, 80, 0.2); border-radius: 12px; color: #69f0ae; text-align: center;"></div>
+
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-input" id="userEmail" disabled>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="firstName">Prénom</label>
+        <input type="text" class="form-input" id="firstName" placeholder="Votre prénom">
+      </div>
+
+      <button class="btn-primary" id="updateProfileBtn">Mettre à jour le profil</button>
     </div>
 
-    <header>
-        <div class="header-content">
-            <a href="/main.html" class="logo">
-                <span class="logo-text">Météorite</span>
-            </a>
-            <button class="mobile-menu-toggle" id="mobileMenuToggle">☰</button>
-            <ul class="nav-menu" id="navMenu">
-                <li><a href="/main.html" class="nav-link">Météo</a></li>
-                <li><a href="/favorites-page.html" class="nav-link">Favoris</a></li>
-                <li><a href="/alerts-page.html" class="nav-link">Alertes</a></li>
-                <li><a href="/settings-page.html" class="nav-link active">Paramètres</a></li>
-            </ul>
-            <div class="user-info" id="userInfo">
-                <button class="theme-toggle" id="themeToggle">🌙</button>
-                <span class="user-name" id="userName"></span>
-                <button class="btn-logout" id="logoutBtn">Déconnexion</button>
-            </div>
+    <div class="settings-section">
+      <h2>🎨 Apparence</h2>
+
+      <div class="appearance-toggle">
+        <div class="appearance-info">
+          <h3>Mode sombre</h3>
+          <p>Activer le thème sombre</p>
         </div>
-    </header>
+        <label class="toggle-switch">
+          <input type="checkbox" id="darkModeToggle">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
 
-    <main>
-        <div class="container">
-            <h1 class="page-title">Paramètres</h1>
+<footer class="app-footer">
+<small>&copy; 2025 Météorite — Application météo moderne</small>
+</footer>
 
-            <div id="loginRequired" style="display: none; text-align: center; padding: 60px 20px;">
-                <div style="font-size: 80px; margin-bottom: 20px;">🔒</div>
-                <h2 style="color: var(--dark-blue); margin-bottom: 15px;">Connexion requise</h2>
-                <p style="color: var(--text-light); margin-bottom: 30px;">Connectez-vous pour accéder aux paramètres</p>
-                <a href="/login-page.html" class="btn-primary">Se connecter</a>
-            </div>
+<script>
+function createStars(id, count, size) {
+  const stars = [];
+  for (let i = 0; i < count; i++) {
+    const x = Math.floor(Math.random() * 2000);
+    const y = Math.floor(Math.random() * 2000);
+    stars.push(`${x}px ${y}px #FFF`);
+  }
+  const el = document.getElementById(id);
+  el.style.width = size + 'px';
+  el.style.height = size + 'px';
+  el.style.boxShadow = stars.join(', ');
+}
 
-            <div id="settingsContent" style="display: none; max-width: 600px; margin: 0 auto;">
-                <div id="errorMessage" style="display: none;"></div>
-                <div id="successMessage" style="display: none;"></div>
+createStars('stars', 200, 1);
+createStars('stars2', 100, 2);
+createStars('stars3', 50, 3);
+</script>
 
-                <div style="background: var(--white); border-radius: 16px; padding: 30px; margin-bottom: 20px; box-shadow: var(--shadow-md);">
-                    <h2 style="color: var(--dark-blue); margin-bottom: 20px;">Compte</h2>
-
-                    <div class="form-group">
-                        <label class="form-label">Email</label>
-                        <input type="email" class="form-input" id="userEmail" disabled>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label" for="firstName">Prénom</label>
-                        <input type="text" class="form-input" id="firstName">
-                    </div>
-
-                    <button class="btn-primary" id="updateProfileBtn">Mettre à jour</button>
-                </div>
-
-                <div style="background: var(--white); border-radius: 16px; padding: 30px; box-shadow: var(--shadow-md);">
-                    <h2 style="color: var(--dark-blue); margin-bottom: 20px;">Apparence</h2>
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <div>
-                            <div style="font-weight: 600; margin-bottom: 5px;">Thème sombre</div>
-                            <div style="font-size: 14px; color: var(--text-light);">Mode sombre</div>
-                        </div>
-                        <input type="checkbox" id="darkModeToggle">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <footer>
-        <div class="footer-content">
-            <p class="footer-text">&copy; 2025 Météorite</p>
-        </div>
-    </footer>
-
-    <script type="module" src="/assets/js/settings-page.js"></script>
+<script type="module" src="/assets/js/theme.js"></script>
+<script type="module" src="/assets/js/settings-page.js"></script>
 </body>
 </html>

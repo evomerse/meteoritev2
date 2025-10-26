@@ -96,7 +96,7 @@ async function displayFavorites(favorites) {
 
       card.addEventListener('click', (e) => {
         if (!e.target.classList.contains('favorite-remove')) {
-          window.location.href = `/main.html?city=${encodeURIComponent(favorite.city_name)}`;
+          window.location.href = `/index.html?city=${encodeURIComponent(favorite.city_name)}`;
         }
       });
 

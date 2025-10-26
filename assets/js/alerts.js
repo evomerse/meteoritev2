@@ -2,7 +2,7 @@ import { supabase } from './supabase-client.js';
 
 export async function getAlerts(userId) {
   const { data, error } = await supabase
-    .from('alerts')
+    .from('weather_alerts')
     .select('*')
     .eq('user_id', userId)
     .order('created_at', { ascending: false });
@@ -16,16 +16,14 @@ export async function getAlerts(userId) {
 
 export async function createAlert(userId, cityName, latitude, longitude, alertType, conditionOperator, conditionValue) {
   const { data, error } = await supabase
-    .from('alerts')
+    .from('weather_alerts')
     .insert([
       {
         user_id: userId,
         city_name: cityName,
-        latitude,
-        longitude,
         alert_type: alertType,
-        condition_operator: conditionOperator,
-        condition_value: parseFloat(conditionValue),
+        operator: conditionOperator,
+        threshold_value: parseFloat(conditionValue),
         is_active: true
       }
     ])
@@ -41,7 +39,7 @@ export async function createAlert(userId, cityName, latitude, longitude, alertTy
 
 export async function updateAlert(alertId, updates) {
   const { data, error } = await supabase
-    .from('alerts')
+    .from('weather_alerts')
     .update(updates)
     .eq('id', alertId)
     .select()
@@ -56,7 +54,7 @@ export async function updateAlert(alertId, updates) {
 
 export async function deleteAlert(alertId) {
   const { error} = await supabase
-    .from('alerts')
+    .from('weather_alerts')
     .delete()
     .eq('id', alertId);
 

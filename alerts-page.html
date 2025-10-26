@@ -1,123 +1,248 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alertes - Météorite</title>
-    <link rel="stylesheet" href="/assets/css/main.css">
-    <link rel="stylesheet" href="/assets/css/components.css">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Alertes — Météorite Fusion</title>
+<link href="/julien/background.css" rel="stylesheet"/>
+<link href="/assets/css/main.css" rel="stylesheet"/>
+<link href="/assets/css/components.css" rel="stylesheet"/>
+<link href="/julien/styles.css" rel="stylesheet"/>
+<link href="/assets/css/merge-adapter.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<script>
+(function(){
+  try {
+    const theme = localStorage.getItem('meteorite_theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', theme);
+  } catch(e) {}
+})();
+</script>
+<style>
+body {
+  background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%) !important;
+  min-height: 100vh;
+  position: relative;
+}
+.header {
+  background: rgba(255, 255, 255, 0.08) !important;
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+[data-theme="light"] .header {
+  background: rgba(255, 255, 255, 0.95) !important;
+}
+[data-theme="light"] body {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+}
+
+.alerts-container {
+  position: relative;
+  z-index: 10;
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.page-title {
+  text-align: center;
+  color: var(--text-dark);
+  font-size: clamp(28px, 5vw, 42px);
+  margin-bottom: 40px;
+}
+
+.login-required {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.login-btn {
+  display: inline-block;
+  padding: 12px 32px;
+  background: var(--primary-blue);
+  color: white;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 600;
+  margin-top: 20px;
+  transition: all 0.3s;
+}
+
+.login-btn:hover {
+  background: var(--dark-blue);
+  transform: translateY(-2px);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.empty-state-icon {
+  font-size: 100px;
+  margin-bottom: 20px;
+  opacity: 0.6;
+}
+
+.empty-state-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 12px;
+}
+
+.empty-state-text {
+  color: var(--text-light);
+  font-size: 16px;
+}
+
+.btn-create-alert {
+  display: inline-block;
+  padding: 14px 32px;
+  background: var(--primary-blue);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-bottom: 30px;
+}
+
+.btn-create-alert:hover {
+  background: var(--dark-blue);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.alert-card {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 20px;
+  padding: 24px;
+  margin-bottom: 16px;
+  backdrop-filter: blur(30px) saturate(160%);
+  transition: all 0.3s;
+}
+
+.alert-card:hover {
+  transform: translateX(5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.alert-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.alert-city {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.alert-delete {
+  background: rgba(255, 80, 80, 0.2);
+  border: 1px solid rgba(255, 80, 80, 0.4);
+  color: #ff5252;
+  padding: 8px 16px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.alert-delete:hover {
+  background: rgba(255, 80, 80, 0.4);
+}
+
+.alert-condition {
+  color: var(--text-light);
+  font-size: 15px;
+}
+</style>
 </head>
 <body>
-    <div class="loader-wrapper" id="loader">
-        <div class="loader"></div>
+
+<div id="stars"></div>
+<div id="stars2"></div>
+<div id="stars3"></div>
+
+<header class="header">
+<div class="header-content">
+<div class="logo">
+<img alt="Logo" class="logo-img" src="/assets/images/Logo_meteorite2.png"/>
+<span class="logo-text">Météorite</span>
+</div>
+<nav class="nav-menu" id="navMenu">
+<a class="nav-link" href="/index.html">Météo</a>
+<a class="nav-link" href="/carte.html">Carte</a>
+<a class="nav-link" href="/favorites-page.html">Favoris</a>
+<a class="nav-link active" href="/alerts-page.html">Alertes</a>
+<a class="nav-link" href="/settings-page.html">Paramètres</a>
+</nav>
+<div class="user-actions">
+<button class="theme-toggle" id="themeToggle" title="Changer de thème">🌙</button>
+<div class="user-info" id="userInfo" style="display: none;">
+<span class="user-name" id="userName"></span>
+<button class="btn-logout" id="logoutBtn">Déconnexion</button>
+</div>
+<div id="authButtons" style="display: flex; gap: 10px;">
+<a class="btn-register" href="/julien/register.html">Inscription</a>
+<a class="btn-login" href="/julien/login.html">Connexion</a>
+</div>
+</div>
+<button class="mobile-menu-toggle" id="mobileMenuToggle">☰</button>
+</div>
+</header>
+
+<div class="alerts-container">
+  <h1 class="page-title">🔔 Mes Alertes Météo</h1>
+
+  <div id="loginRequired" class="login-required" style="display: none;">
+    <div style="font-size: 100px; margin-bottom: 20px;">🔒</div>
+    <h2 style="color: var(--text-dark); margin-bottom: 12px;">Connexion requise</h2>
+    <p style="color: var(--text-light);">Connectez-vous pour gérer vos alertes météo</p>
+    <a href="/julien/login.html" class="login-btn">Se connecter</a>
+  </div>
+
+  <div id="alertsContent" style="display: none;">
+    <div style="text-align: center; margin-bottom: 30px;">
+      <button class="btn-create-alert" id="createAlertBtn">+ Créer une alerte</button>
     </div>
 
-    <header>
-        <div class="header-content">
-            <a href="/main.html" class="logo">
-                <span class="logo-text">Météorite</span>
-            </a>
-            <button class="mobile-menu-toggle" id="mobileMenuToggle">☰</button>
-            <ul class="nav-menu" id="navMenu">
-                <li><a href="/main.html" class="nav-link">Météo</a></li>
-                <li><a href="/favorites-page.html" class="nav-link">Favoris</a></li>
-                <li><a href="/alerts-page.html" class="nav-link active">Alertes</a></li>
-                <li><a href="/settings-page.html" class="nav-link">Paramètres</a></li>
-            </ul>
-            <div class="user-info" id="userInfo">
-                <button class="theme-toggle" id="themeToggle">🌙</button>
-                <span class="user-name" id="userName"></span>
-                <button class="btn-logout" id="logoutBtn">Déconnexion</button>
-            </div>
-        </div>
-    </header>
+    <div id="alertsContainer"></div>
+  </div>
+</div>
 
-    <main>
-        <div class="container">
-            <h1 class="page-title">Mes alertes météo</h1>
+<footer class="app-footer">
+<small>&copy; 2025 Météorite — Application météo moderne</small>
+</footer>
 
-            <div id="loginRequired" style="display: none; text-align: center; padding: 60px 20px;">
-                <div style="font-size: 80px; margin-bottom: 20px;">🔒</div>
-                <h2 style="color: var(--dark-blue); margin-bottom: 15px;">Connexion requise</h2>
-                <p style="color: var(--text-light); margin-bottom: 30px;">Connectez-vous pour gérer vos alertes</p>
-                <a href="/login-page.html" class="btn-primary">Se connecter</a>
-            </div>
+<script>
+function createStars(id, count, size) {
+  const stars = [];
+  for (let i = 0; i < count; i++) {
+    const x = Math.floor(Math.random() * 2000);
+    const y = Math.floor(Math.random() * 2000);
+    stars.push(`${x}px ${y}px #FFF`);
+  }
+  const el = document.getElementById(id);
+  el.style.width = size + 'px';
+  el.style.height = size + 'px';
+  el.style.boxShadow = stars.join(', ');
+}
 
-            <div id="alertsContent" style="display: none;">
-                <div style="text-align: center; margin-bottom: 30px;">
-                    <button class="btn-primary" id="createAlertBtn">Créer une alerte</button>
-                </div>
+createStars('stars', 200, 1);
+createStars('stars2', 100, 2);
+createStars('stars3', 50, 3);
+</script>
 
-                <div id="errorMessage" style="display: none;"></div>
-                <div id="successMessage" style="display: none;"></div>
-
-                <div id="alertsContainer">
-                    <div class="empty-state">
-                        <div class="empty-state-icon">🔔</div>
-                        <div class="empty-state-title">Aucune alerte configurée</div>
-                        <div class="empty-state-text">Créez des alertes pour être notifié des conditions météo</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <div class="modal-overlay" id="alertModal">
-        <div class="modal">
-            <div class="modal-header">
-                <h2 class="modal-title">Créer une alerte</h2>
-                <button class="modal-close" id="closeModalBtn">&times;</button>
-            </div>
-
-            <div class="modal-body">
-                <form id="alertForm">
-                    <div class="form-group">
-                        <label class="form-label" for="alertCity">Ville</label>
-                        <input type="text" class="form-input" id="alertCity" required placeholder="Paris">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label" for="alertType">Type d'alerte</label>
-                        <select class="form-select" id="alertType" required>
-                            <option value="">Sélectionner...</option>
-                            <option value="rain">Pluie</option>
-                            <option value="wind">Vent</option>
-                            <option value="temperature">Température</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label" for="alertOperator">Condition</label>
-                        <select class="form-select" id="alertOperator" required>
-                            <option value="">Sélectionner...</option>
-                            <option value=">">Supérieur à</option>
-                            <option value="<">Inférieur à</option>
-                            <option value=">=">Supérieur ou égal</option>
-                            <option value="<=">Inférieur ou égal</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label" for="alertValue">Valeur</label>
-                        <input type="number" class="form-input" id="alertValue" required placeholder="25" step="0.1">
-                        <small id="alertUnit" style="color: var(--text-light);"></small>
-                    </div>
-                </form>
-            </div>
-
-            <div class="modal-footer">
-                <button class="btn-secondary" id="cancelAlertBtn">Annuler</button>
-                <button class="btn-primary" id="saveAlertBtn">Créer</button>
-            </div>
-        </div>
-    </div>
-
-    <footer>
-        <div class="footer-content">
-            <p class="footer-text">&copy; 2025 Météorite</p>
-        </div>
-    </footer>
-
-    <script type="module" src="/assets/js/alerts-page.js"></script>
+<script type="module" src="/assets/js/theme.js"></script>
+<script type="module" src="/assets/js/alerts-page.js"></script>
 </body>
 </html>

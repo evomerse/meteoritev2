@@ -1,275 +1,263 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carte de France - Météorite</title>
-    <link rel="icon" type="image/x-icon" href="/assets/images/Logo_meteorite.png">
-    <link rel="stylesheet" href="/assets/css/main.css">
-    <link rel="stylesheet" href="/assets/css/components.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <style>
-        #map {
-            height: 600px;
-            width: 100%;
-            border-radius: 20px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-            margin-top: 20px;
-        }
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Carte Météo — Météorite Fusion</title>
+<link href="/julien/background.css" rel="stylesheet"/>
+<link href="/assets/css/main.css" rel="stylesheet"/>
+<link href="/assets/css/components.css" rel="stylesheet"/>
+<link href="/julien/styles.css" rel="stylesheet"/>
+<link href="/assets/css/merge-adapter.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script>
+(function(){
+  try {
+    const theme = localStorage.getItem('meteorite_theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', theme);
+  } catch(e) {}
+})();
+</script>
+<style>
+body {
+  background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%) !important;
+  min-height: 100vh;
+  position: relative;
+}
+.header {
+  background: rgba(255, 255, 255, 0.08) !important;
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+[data-theme="light"] .header {
+  background: rgba(255, 255, 255, 0.95) !important;
+}
+[data-theme="light"] body {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+}
 
-        .city-marker {
-            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
-            color: white;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 14px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            border: 2px solid white;
-            text-align: center;
-            min-width: 80px;
-        }
+#map {
+  height: 500px;
+  width: 100%;
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  margin-top: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
 
-        .weather-info {
-            font-size: 12px;
-            margin-top: 4px;
-            opacity: 0.95;
-        }
+.city-marker {
+  background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+  color: white;
+  padding: 8px 15px;
+  border-radius: 18px;
+  font-weight: 600;
+  font-size: 13px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  border: 2px solid white;
+  text-align: center;
+  min-width: 80px;
+}
 
-        .map-controls {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
+.map-container {
+  position: relative;
+  z-index: 10;
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
 
-        .btn-city {
-            padding: 10px 20px;
-            background: var(--white);
-            border: 2px solid var(--primary-blue);
-            border-radius: 50px;
-            color: var(--dark-blue);
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
+.map-title {
+  text-align: center;
+  color: var(--text-dark);
+  font-size: clamp(24px, 4vw, 36px);
+  margin-bottom: 30px;
+}
 
-        .btn-city:hover,
-        .btn-city.active {
-            background: var(--primary-blue);
-            color: white;
-        }
+.map-controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
 
-        @media (max-width: 768px) {
-            #map {
-                height: 400px;
-            }
-        }
-    </style>
+.btn-city {
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 20px;
+  color: var(--text-dark);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  backdrop-filter: blur(10px);
+}
+
+.btn-city:hover,
+.btn-city.active {
+  background: var(--primary-blue);
+  color: white;
+  transform: translateY(-2px);
+}
+</style>
 </head>
 <body>
-    <header class="header">
-        <div class="header-content">
-            <div class="logo">
-                <img src="/assets/images/Logo_meteorite2.png" alt="Logo" class="logo-img">
-                <span class="logo-text">Météorite</span>
+
+<div id="stars"></div>
+<div id="stars2"></div>
+<div id="stars3"></div>
+
+<header class="header">
+<div class="header-content">
+<div class="logo">
+<img alt="Logo" class="logo-img" src="/assets/images/Logo_meteorite2.png"/>
+<span class="logo-text">Météorite</span>
+</div>
+<nav class="nav-menu" id="navMenu">
+<a class="nav-link" href="/index.html">Météo</a>
+<a class="nav-link active" href="/carte.html">Carte</a>
+<a class="nav-link" href="/favorites-page.html">Favoris</a>
+<a class="nav-link" href="/alerts-page.html">Alertes</a>
+<a class="nav-link" href="/settings-page.html">Paramètres</a>
+</nav>
+<div class="user-actions">
+<button class="theme-toggle" id="themeToggle" title="Changer de thème">🌙</button>
+<div class="user-info" id="userInfo" style="display: none;">
+<span class="user-name" id="userName"></span>
+<button class="btn-logout" id="logoutBtn">Déconnexion</button>
+</div>
+<div id="authButtons" style="display: flex; gap: 10px;">
+<a class="btn-register" href="/julien/register.html">Inscription</a>
+<a class="btn-login" href="/julien/login.html">Connexion</a>
+</div>
+</div>
+<button class="mobile-menu-toggle" id="mobileMenuToggle">☰</button>
+</div>
+</header>
+
+<div class="map-container">
+  <h1 class="map-title">🗺️ Carte Météo Interactiv</h1>
+
+  <div class="map-controls">
+    <button class="btn-city" data-city="Paris" data-lat="48.8566" data-lon="2.3522">Paris</button>
+    <button class="btn-city" data-city="Marseille" data-lat="43.2965" data-lon="5.3698">Marseille</button>
+    <button class="btn-city" data-city="Lyon" data-lat="45.7640" data-lon="4.8357">Lyon</button>
+    <button class="btn-city" data-city="Toulouse" data-lat="43.6047" data-lon="1.4442">Toulouse</button>
+    <button class="btn-city" data-city="Nice" data-lat="43.7102" data-lon="7.2620">Nice</button>
+    <button class="btn-city" data-city="Bordeaux" data-lat="44.8378" data-lon="-0.5792">Bordeaux</button>
+  </div>
+
+  <div id="map"></div>
+</div>
+
+<footer class="app-footer">
+<small>Données cartographiques: <a href="https://openstreetmap.org" rel="noopener" target="_blank">OpenStreetMap</a> • Météo: <a href="https://open-meteo.com" rel="noopener" target="_blank">Open‑Meteo</a></small>
+</footer>
+
+<script>
+function createStars(id, count, size) {
+  const stars = [];
+  for (let i = 0; i < count; i++) {
+    const x = Math.floor(Math.random() * 2000);
+    const y = Math.floor(Math.random() * 2000);
+    stars.push(`${x}px ${y}px #FFF`);
+  }
+  const el = document.getElementById(id);
+  el.style.width = size + 'px';
+  el.style.height = size + 'px';
+  el.style.boxShadow = stars.join(', ');
+}
+
+createStars('stars', 200, 1);
+createStars('stars2', 100, 2);
+createStars('stars3', 50, 3);
+</script>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script type="module" src="/assets/js/theme.js"></script>
+<script type="module">
+  const cities = [
+    { name: 'Paris', lat: 48.8566, lon: 2.3522 },
+    { name: 'Marseille', lat: 43.2965, lon: 5.3698 },
+    { name: 'Lyon', lat: 45.7640, lon: 4.8357 },
+    { name: 'Toulouse', lat: 43.6047, lon: 1.4442 },
+    { name: 'Nice', lat: 43.7102, lon: 7.2620 },
+    { name: 'Nantes', lat: 47.2184, lon: -1.5536 },
+    { name: 'Strasbourg', lat: 48.5734, lon: 7.7521 },
+    { name: 'Bordeaux', lat: 44.8378, lon: -0.5792 },
+    { name: 'Lille', lat: 50.6292, lon: 3.0573 },
+    { name: 'Rennes', lat: 48.1173, lon: -1.6778 }
+  ];
+
+  const map = L.map('map').setView([46.603354, 1.888334], 6);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap',
+    maxZoom: 18
+  }).addTo(map);
+
+  async function getWeatherData(lat, lon) {
+    try {
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`;
+      const response = await fetch(url);
+      return await response.json();
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function getWeatherIcon(code) {
+    const icons = {
+      0: '☀️', 1: '🌤', 2: '⛅', 3: '☁️',
+      45: '🌫', 61: '🌧', 63: '🌧', 65: '🌧',
+      71: '🌨', 95: '⛈'
+    };
+    return icons[code] || '❓';
+  }
+
+  async function addCityMarkers() {
+    for (const city of cities) {
+      const weatherData = await getWeatherData(city.lat, city.lon);
+
+      if (weatherData && weatherData.current_weather) {
+        const temp = Math.round(weatherData.current_weather.temperature);
+        const icon = getWeatherIcon(weatherData.current_weather.weathercode);
+
+        const markerIcon = L.divIcon({
+          className: 'city-marker',
+          html: `
+            <div>
+              <strong>${city.name}</strong><br>
+              ${icon} ${temp}°C
             </div>
-            <nav class="nav-menu" id="navMenu">
-                <a href="/index.html" class="nav-link">Météo</a>
-                <a href="/carte.html" class="nav-link active">Carte</a>
-                <a href="/favorites.html" class="nav-link">Favoris</a>
-                <a href="/alerts.html" class="nav-link">Alertes</a>
-                <a href="/settings.html" class="nav-link">Paramètres</a>
-            </nav>
-            <div class="user-actions">
-                <button class="theme-toggle" id="themeToggle">🌙</button>
-                <div class="user-info" id="userInfo" style="display: none;">
-                    <span class="user-name" id="userName"></span>
-                    <button class="btn-logout" id="logoutBtn">Déconnexion</button>
-                </div>
-                <a href="/login.html" class="btn-login" id="loginBtn">Connexion</a>
-            </div>
-            <button class="mobile-menu-toggle" id="mobileMenuToggle">☰</button>
-        </div>
-    </header>
-
-    <main class="main-content">
-        <div class="container">
-            <h1 class="section-title">Carte Météo de France</h1>
-            <p style="text-align: center; color: var(--text-light); margin-bottom: 30px;">
-                Cliquez sur une ville pour voir sa météo détaillée
-            </p>
-
-            <div class="map-controls">
-                <button class="btn-city" data-city="Paris" data-lat="48.8566" data-lon="2.3522">Paris</button>
-                <button class="btn-city" data-city="Marseille" data-lat="43.2965" data-lon="5.3698">Marseille</button>
-                <button class="btn-city" data-city="Lyon" data-lat="45.7640" data-lon="4.8357">Lyon</button>
-                <button class="btn-city" data-city="Toulouse" data-lat="43.6047" data-lon="1.4442">Toulouse</button>
-                <button class="btn-city" data-city="Nice" data-lat="43.7102" data-lon="7.2620">Nice</button>
-                <button class="btn-city" data-city="Nantes" data-lat="47.2184" data-lon="-1.5536">Nantes</button>
-                <button class="btn-city" data-city="Strasbourg" data-lat="48.5734" data-lon="7.7521">Strasbourg</button>
-                <button class="btn-city" data-city="Bordeaux" data-lat="44.8378" data-lon="-0.5792">Bordeaux</button>
-                <button class="btn-city" data-city="Lille" data-lat="50.6292" data-lon="3.0573">Lille</button>
-                <button class="btn-city" data-city="Rennes" data-lat="48.1173" data-lon="-1.6778">Rennes</button>
-            </div>
-
-            <div id="map"></div>
-        </div>
-    </main>
-
-    <footer class="footer">
-        <div class="footer-content">
-            <p>&copy; 2025 Météorite - Application météo moderne</p>
-        </div>
-    </footer>
-
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script type="module">
-        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
-
-        const supabaseUrl = 'https://djpigduzgtzlktpyhhgf.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRqcGlnZHV6Z3R6bGt0cHloaGdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjExNTMwMzQsImV4cCI6MjA3NjcyOTAzNH0.xqxv2LGs-dXSXDg_ccXzhAY02lP8KxOZ_TpXXZlmAUQ';
-        const supabase = createClient(supabaseUrl, supabaseKey);
-
-        const cities = [
-            { name: 'Paris', lat: 48.8566, lon: 2.3522 },
-            { name: 'Marseille', lat: 43.2965, lon: 5.3698 },
-            { name: 'Lyon', lat: 45.7640, lon: 4.8357 },
-            { name: 'Toulouse', lat: 43.6047, lon: 1.4442 },
-            { name: 'Nice', lat: 43.7102, lon: 7.2620 },
-            { name: 'Nantes', lat: 47.2184, lon: -1.5536 },
-            { name: 'Strasbourg', lat: 48.5734, lon: 7.7521 },
-            { name: 'Bordeaux', lat: 44.8378, lon: -0.5792 },
-            { name: 'Lille', lat: 50.6292, lon: 3.0573 },
-            { name: 'Rennes', lat: 48.1173, lon: -1.6778 },
-            { name: 'Montpellier', lat: 43.6108, lon: 3.8767 },
-            { name: 'Reims', lat: 49.2583, lon: 4.0317 },
-            { name: 'Le Havre', lat: 49.4944, lon: 0.1079 },
-            { name: 'Dijon', lat: 47.3220, lon: 5.0415 },
-            { name: 'Grenoble', lat: 45.1885, lon: 5.7245 },
-            { name: 'Angers', lat: 47.4784, lon: -0.5632 },
-            { name: 'Toulon', lat: 43.1242, lon: 5.9280 },
-            { name: 'Brest', lat: 48.3904, lon: -4.4861 },
-            { name: 'Clermont-Ferrand', lat: 45.7772, lon: 3.0870 },
-            { name: 'Rouen', lat: 49.4432, lon: 1.0993 }
-        ];
-
-        const map = L.map('map').setView([46.603354, 1.888334], 6);
-
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; OpenStreetMap contributors',
-            maxZoom: 18
-        }).addTo(map);
-
-        async function getWeatherData(lat, lon) {
-            try {
-                const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`;
-                const response = await fetch(url);
-                return await response.json();
-            } catch (error) {
-                console.error('Erreur météo:', error);
-                return null;
-            }
-        }
-
-        function getWeatherIcon(code) {
-            const icons = {
-                0: '☀️', 1: '🌤', 2: '⛅', 3: '☁️',
-                45: '🌫', 61: '🌧', 63: '🌧', 65: '🌧',
-                71: '🌨', 95: '⛈'
-            };
-            return icons[code] || '❓';
-        }
-
-        async function addCityMarkers() {
-            for (const city of cities) {
-                const weatherData = await getWeatherData(city.lat, city.lon);
-
-                if (weatherData && weatherData.current_weather) {
-                    const temp = Math.round(weatherData.current_weather.temperature);
-                    const icon = getWeatherIcon(weatherData.current_weather.weathercode);
-
-                    const markerIcon = L.divIcon({
-                        className: 'city-marker',
-                        html: `
-                            <div>
-                                <div><strong>${city.name}</strong></div>
-                                <div class="weather-info">${icon} ${temp}°C</div>
-                            </div>
-                        `,
-                        iconSize: [100, 60],
-                        iconAnchor: [50, 30]
-                    });
-
-                    const marker = L.marker([city.lat, city.lon], { icon: markerIcon }).addTo(map);
-
-                    marker.on('click', () => {
-                        window.location.href = `/index.html?lat=${city.lat}&lon=${city.lon}&city=${encodeURIComponent(city.name)}`;
-                    });
-                }
-            }
-        }
-
-        document.querySelectorAll('.btn-city').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const city = btn.dataset.city;
-                const lat = parseFloat(btn.dataset.lat);
-                const lon = parseFloat(btn.dataset.lon);
-
-                document.querySelectorAll('.btn-city').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-
-                map.flyTo([lat, lon], 10, {
-                    duration: 1.5
-                });
-            });
+          `,
+          iconSize: [100, 50],
+          iconAnchor: [50, 25]
         });
 
-        async function init() {
-            const currentUser = await getCurrentUser();
+        const marker = L.marker([city.lat, city.lon], { icon: markerIcon }).addTo(map);
 
-            if (currentUser) {
-                const profile = await getUserProfile(currentUser.id);
-                if (profile) {
-                    document.getElementById('userName').textContent = profile.first_name || profile.email;
-                    document.getElementById('userInfo').style.display = 'flex';
-                    document.getElementById('loginBtn').style.display = 'none';
-                }
-            } else {
-                document.getElementById('loginBtn').style.display = 'inline-block';
-            }
-
-            await addCityMarkers();
-        }
-
-        async function getCurrentUser() {
-            const { data: { user } } = await supabase.auth.getUser();
-            return user;
-        }
-
-        async function getUserProfile(userId) {
-            const { data } = await supabase.from('profiles').select('*').eq('id', userId).maybeSingle();
-            return data;
-        }
-
-        document.getElementById('logoutBtn')?.addEventListener('click', async () => {
-            await supabase.auth.signOut();
-            window.location.href = '/login.html';
+        marker.on('click', () => {
+          window.location.href = `/index.html?city=${encodeURIComponent(city.name)}`;
         });
+      }
+    }
+  }
 
-        document.getElementById('mobileMenuToggle')?.addEventListener('click', () => {
-            document.getElementById('navMenu').classList.toggle('active');
-        });
+  document.querySelectorAll('.btn-city').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const lat = parseFloat(btn.dataset.lat);
+      const lon = parseFloat(btn.dataset.lon);
 
-        document.getElementById('themeToggle')?.addEventListener('click', () => {
-            const theme = document.documentElement.getAttribute('data-theme') || 'light';
-            const newTheme = theme === 'light' ? 'dark' : 'light';
-            document.documentElement.setAttribute('data-theme', newTheme);
-            document.getElementById('themeToggle').textContent = newTheme === 'light' ? '🌙' : '☀️';
-            localStorage.setItem('meteorite_theme', newTheme);
-        });
+      document.querySelectorAll('.btn-city').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
 
-        init();
-    </script>
+      map.flyTo([lat, lon], 10, { duration: 1.5 });
+    });
+  });
+
+  addCityMarkers();
+</script>
 </body>
 </html>

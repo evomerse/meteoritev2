@@ -938,49 +938,6 @@
     font-size: 16px;
   }
 }
-/* Weather Action Buttons */
-.weather-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-.btn-add-favorite,
-.btn-add-alert {
-  flex: 1;
-  padding: 12px 20px;
-  font-size: 14px;
-  font-weight: 600;
-  border: none;
-  border-radius: 50px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.btn-add-favorite {
-  background: linear-gradient(135deg, #ffd700 0%, #ffaa00 100%);
-  color: #333;
-}
-
-.btn-add-favorite:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
-}
-
-.btn-add-favorite.active {
-  background: linear-gradient(135deg, #ffaa00 0%, #ff8800 100%);
-}
-
-.btn-add-alert {
-  background: linear-gradient(135deg, #70b7ff 0%, #005c99 100%);
-  color: #ffffff;
-}
-
-.btn-add-alert:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 92, 153, 0.4);
-}
-
 /* Fond global */
 html, body {
   height: 100%;
